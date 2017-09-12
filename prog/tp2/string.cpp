@@ -73,14 +73,7 @@ public:
 		append(s.elements);
 		return *this;
 	}
-	Str & operator>>(Str const & s){
-		append(s.elements);
-		return *this;
-	}
-	Str & operator<<(Str const & s){
-		s.append(elements);
-		return s;
-	}
+	
 	bool operator!=(Str const & s){
 		return strcmp(elements, s.elements) != 0;
 	}
@@ -120,6 +113,8 @@ public:
 	}
 
 	friend TestStr;
+	friend istream & operator>>(istream &is, Str &s);
+	friend ostream & operator<<(ostream &os, Str &s);
 private:
 	void grow(int size){
 		elements = (char*) realloc(elements, size + size);
@@ -129,6 +124,15 @@ private:
 	char *elements;
 };
 
+istream & operator>>(istream &is, Str &s){
+	s.append(is.); //todo
+	return is;
+}
+
+ostream & operator<<(ostream &os, Str &s){
+	os << s.elements;
+	return os;
+}
 
 
 bool TestStr::test_str_default_constructor(){
@@ -229,6 +233,7 @@ bool TestStr::test_str_substr(){
 }
 
 bool test_str_streams(){
+
 	return false;
 }
 
