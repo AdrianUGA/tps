@@ -12,17 +12,19 @@ public:
 		std::cout << test_str_default_constructor() << " : test_str_default_constructor" << std::endl;
 		std::cout << test_str_cstring_constructor() << " : test_str_cstring_constructor" << std::endl;
 		std::cout << test_str_char_constructor() << " : test_str_char_constructor" << std::endl;
-		std::cout << test_str_to_string_constructor() << " : test_str_to_string_constructor" << std::endl;
-		std::cout << test_str_op_concat_constructor() << " : test_str_op_concat_constructor" << std::endl;
-		std::cout << test_str_op_bool_constructor() << " : test_str_op_bool_constructor" << std::endl;
+		std::cout << test_str_to_string() << " : test_str_to_string" << std::endl;
+		std::cout << test_str_op_concat() << " : test_str_op_concat" << std::endl;
+		std::cout << test_str_op_bool() << " : test_str_op_bool" << std::endl;
+		std::cout << test_str_substr() << " : test_str_substr" << std::endl;
 	}
 private:
 	bool test_str_default_constructor();
 	bool test_str_cstring_constructor();
 	bool test_str_char_constructor();
-	bool test_str_to_string_constructor();
-	bool test_str_op_concat_constructor();
-	bool test_str_op_bool_constructor();
+	bool test_str_to_string();
+	bool test_str_op_concat();
+	bool test_str_op_bool();
+	bool test_str_substr();
 
 };
 
@@ -65,31 +67,46 @@ public:
 		elements[size] = '\0';
 	}
 
-	Str & operator+(const & Str s){
+	Str & operator+(Str const & s){
 		append(s.elements);
 		return *this;
 	}
-	bool operator!=(const & Str s){
+	bool operator!=(Str const & s){
 		return strcmp(elements, s.elements) != 0;
 	}
-	bool operator==(const & Str s){
+	bool operator==(Str const & s){
 		return strcmp(elements, s.elements) == 0;
 	}
-	bool operator<(const & Str s){
+	bool operator<(Str const & s){
 		return strcmp(elements, s.elements) < 0;	
 	}
-	bool operator>(const & Str s){
+	bool operator>(Str const & s){
 		return strcmp(elements, s.elements) > 0;	
 	}
-	bool operator<=(const & Str s){
+	bool operator<=(Str const & s){
 		return strcmp(elements, s.elements) <= 0;	
 	}
-	bool operator>=(const & Str s){
+	bool operator>=(Str const & s){
 		return strcmp(elements, s.elements) >= 0;	
+	}
+	char operator[](int i){
+		return elements[i];
+	}
+
+	bool empty(){
+		return size == 0;
 	}
 
 	int length(){
 		return size;
+	}
+
+	Str substr(int begin, int end){
+		Str s("");
+		for (int i = begin; i < end && i < size; i++) {
+			s + Str(elements[i]);
+		}
+		return s;
 	}
 
 	friend TestStr;
@@ -137,7 +154,7 @@ bool TestStr::test_str_char_constructor(){
 	return true;
 }
 
-bool TestStr::test_str_to_string_constructor(){
+bool TestStr::test_str_to_string(){
 	char cstring[] = "Vive le pthon aussi !";
 	Str s(cstring);
 	if(strcmp(cstring, s.to_string()) != 0)
@@ -151,24 +168,55 @@ bool TestStr::test_str_to_string_constructor(){
 	return true;
 }
 
-bool TestStr::test_str_op_concat_constructor(){
+bool TestStr::test_str_op_concat(){
 	char debut[] = "Mais surtout...";
 	char fin[] = " Vive le C++ !";
-	char concat[30];
+	char concat[30]; concat[0] = '\0';
 	strcat(concat, debut);
 	strcat(concat, fin);
 
-	Str s(debut);
-	Str s(fin);
+	Str sdeb(debut);
+	Str sfin(fin);
 
+	if(strcmp((sdeb + sfin).elements, concat) != 0)
+		return false;
+	return true;
 }
 
-bool TestStr::test_str_op_bool_constructor(){
+bool TestStr::test_str_op_bool(){
 	char ch1[] = "Le Python c'est plutot bien quand même.";
 	char ch2[] = "Voire franchement super bien !";
-	
+	Str s1(ch1);
+	Str s2(ch2);
+	if(s1 != s1)
+		return false;
+	if(s1 == s2)
+		return false;
+	if(s1 > s2)
+		return false;
+	if(s2 < s1)
+		return false;
+	if(s1 >= s2)
+		return false;
+	if(s2 <= s1)
+		return false;
+	if(s1 < s1)
+		return false;
+	if(s1 > s1)
+		return false;
+	return true;
 }
 
+bool TestStr::test_str_substr(){
+	Str s("This is a substring");
+	if(strcmp(s.substr(10,19).elements, "substring") != 0)
+		return false;
+	if(strcmp(s.substr(10,200).elements, "substring") != 0)
+		return false;
+	if(strcmp(s.substr(20,1).elements, "") != 0)
+		return false;
+	return true;
+}
 
 
 int main(int argc, char const *argv[])
