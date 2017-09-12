@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="/opt/idea-IU-162.2032.8/jre/jre/lib/ext/jfxrt.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
