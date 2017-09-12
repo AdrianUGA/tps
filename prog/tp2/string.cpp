@@ -16,6 +16,7 @@ public:
 		std::cout << test_str_op_concat() << " : test_str_op_concat" << std::endl;
 		std::cout << test_str_op_bool() << " : test_str_op_bool" << std::endl;
 		std::cout << test_str_substr() << " : test_str_substr" << std::endl;
+		std::cout << test_str_streams() << " : test_str_streams" << std::endl;
 	}
 private:
 	bool test_str_default_constructor();
@@ -25,6 +26,7 @@ private:
 	bool test_str_op_concat();
 	bool test_str_op_bool();
 	bool test_str_substr();
+	bool test_str_streams();
 
 };
 
@@ -70,6 +72,14 @@ public:
 	Str & operator+(Str const & s){
 		append(s.elements);
 		return *this;
+	}
+	Str & operator>>(Str const & s){
+		append(s.elements);
+		return *this;
+	}
+	Str & operator<<(Str const & s){
+		s.append(elements);
+		return s;
 	}
 	bool operator!=(Str const & s){
 		return strcmp(elements, s.elements) != 0;
@@ -217,6 +227,11 @@ bool TestStr::test_str_substr(){
 		return false;
 	return true;
 }
+
+bool test_str_streams(){
+	return false;
+}
+
 
 
 int main(int argc, char const *argv[])
