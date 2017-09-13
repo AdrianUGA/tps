@@ -9,6 +9,7 @@ public:
 	TestStr(){
 		if(!UNIT_TEST)
 			return;
+		std::cout << "Test order matters !" << std::endl;
 		std::cout << test_str_default_constructor() << " : test_str_default_constructor" << std::endl;
 		std::cout << test_str_cstring_constructor() << " : test_str_cstring_constructor" << std::endl;
 		std::cout << test_str_char_constructor() << " : test_str_char_constructor" << std::endl;
@@ -17,6 +18,7 @@ public:
 		std::cout << test_str_op_bool() << " : test_str_op_bool" << std::endl;
 		std::cout << test_str_substr() << " : test_str_substr" << std::endl;
 		std::cout << test_str_streams() << " : test_str_streams" << std::endl;
+		std::cout << test_str_square_brakets() << " : test_str_square_brakets" << std::endl;
 	}
 private:
 	bool test_str_default_constructor();
@@ -27,6 +29,7 @@ private:
 	bool test_str_op_bool();
 	bool test_str_substr();
 	bool test_str_streams();
+	bool test_str_square_brakets();
 
 };
 
@@ -51,6 +54,24 @@ public:
 		s[0] = c;
 		s[1] = '\0';
 		append(s);
+	}
+
+	Str(const char *s, const char *substr_to_remove){
+		int substr_len = strlen(substr_to_remove);
+		int s_len = strlen(s);
+		for (int i = 0; i < s_len; ++i){
+			bool substr_here = true;
+			if(i+substr_len < s_len){
+				for (int j = 0; j < substr_len; ++j){
+					if(s[i+j] V= substr_to_remove[j]){
+						substr_here = false;
+						break;
+					}
+				}
+				if(substr_here)
+					i += substr_len;
+			}
+		}
 	}
 
 	~Str(){
@@ -226,6 +247,21 @@ bool TestStr::test_str_op_bool(){
 		return false;
 	if(s1 > s1)
 		return false;
+	return true;
+}
+
+bool TestStr::test_str_square_brakets(){
+	char str[] = "Hello !";
+	Str s(str);
+	for (int i = 0; i < strlen(str); ++i)
+	{
+		if(s[i] != str[i])
+			return false;
+	}
+	// todo
+	// s[0] = 'W';
+	// if(s[0] != 'W')
+	// 	return false;
 	return true;
 }
 
