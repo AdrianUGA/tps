@@ -42,6 +42,10 @@ public:
 		append(s);
 	}
 
+	Str(const std::string s) : size(0), elements((char*) malloc(sizeof(char))){
+		append(s);
+	}
+
 	Str(const char c) : size(0), elements((char*) malloc(sizeof(char))){
 		char s[2];
 		s[0] = c;
@@ -67,6 +71,10 @@ public:
 			size++;
 		}
 		elements[size] = '\0';
+	}
+
+	void append(const std::string s){
+		append(s.c_str());
 	}
 
 	Str & operator+(Str const & s){
@@ -113,8 +121,8 @@ public:
 	}
 
 	friend TestStr;
-	friend istream & operator>>(istream &is, Str &s);
-	friend ostream & operator<<(ostream &os, Str &s);
+	friend std::istream & operator>>(std::istream &is, Str &s);
+	friend std::ostream & operator<<(std::ostream &os, Str &s);
 private:
 	void grow(int size){
 		elements = (char*) realloc(elements, size + size);
@@ -124,12 +132,12 @@ private:
 	char *elements;
 };
 
-istream & operator>>(istream &is, Str &s){
-	s.append(is.); //todo
+std::istream & operator>>(std::istream &is, Str &s){
+	is >> s.elements; //todo
 	return is;
 }
 
-ostream & operator<<(ostream &os, Str &s){
+std::ostream & operator<<(std::ostream &os, Str &s){
 	os << s.elements;
 	return os;
 }
@@ -232,9 +240,15 @@ bool TestStr::test_str_substr(){
 	return true;
 }
 
-bool test_str_streams(){
-
-	return false;
+bool TestStr::test_str_streams(){
+	std::string s1("Coucou");
+	Str s2("Coucou");
+	s1.append(" toi !");
+	s2.append(" toi !");
+	Str s3(s1.c_str());
+	if(s2 != s3)
+		return false;
+	return true;
 }
 
 
