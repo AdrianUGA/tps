@@ -13,23 +13,25 @@ public:
 		std::cout << test_str_default_constructor() << " : test_str_default_constructor" << std::endl;
 		std::cout << test_str_cstring_constructor() << " : test_str_cstring_constructor" << std::endl;
 		std::cout << test_str_char_constructor() << " : test_str_char_constructor" << std::endl;
-		std::cout << test_str_to_string() << " : test_str_to_string" << std::endl;
+		std::cout << test_str_cstring() << " : test_str_cstring" << std::endl;
 		std::cout << test_str_op_concat() << " : test_str_op_concat" << std::endl;
 		std::cout << test_str_op_bool() << " : test_str_op_bool" << std::endl;
 		std::cout << test_str_substr() << " : test_str_substr" << std::endl;
 		std::cout << test_str_streams() << " : test_str_streams" << std::endl;
 		std::cout << test_str_square_brakets() << " : test_str_square_brakets" << std::endl;
+		std::cout << test_str_constructor_substring() << " : test_str_constructor_substring" << std::endl;
 	}
 private:
 	bool test_str_default_constructor();
 	bool test_str_cstring_constructor();
 	bool test_str_char_constructor();
-	bool test_str_to_string();
+	bool test_str_cstring();
 	bool test_str_op_concat();
 	bool test_str_op_bool();
 	bool test_str_substr();
 	bool test_str_streams();
 	bool test_str_square_brakets();
+	bool test_str_constructor_substring();
 
 };
 
@@ -56,22 +58,26 @@ public:
 		append(s);
 	}
 
-	Str(const char *s, const char *substr_to_remove){
+	Str(const char *s, const char *substr_to_remove) : size(0), elements((char*) malloc(sizeof(char))){
 		int substr_len = strlen(substr_to_remove);
 		int s_len = strlen(s);
-		for (int i = 0; i < s_len; ++i){
-			bool substr_here = true;
+		for (int i = 0; i < s_len; i++){
+			bool substr_here = false;
 			if(i+substr_len < s_len){
-				for (int j = 0; j < substr_len; ++j){
-					if(s[i+j] V= substr_to_remove[j]){
+				substr_here = true;
+				for (int j = 0; j < substr_len; j++){
+					if(s[i+j] != substr_to_remove[j]){
 						substr_here = false;
 						break;
 					}
 				}
-				if(substr_here)
-					i += substr_len;
 			}
+			if(substr_here)
+				i += substr_len - 1;
+			else
+				append(Str(s[i]).cstring());
 		}
+
 	}
 
 	~Str(){
@@ -79,7 +85,7 @@ public:
 			free(elements);
 	}
 
-	const char * to_string(){
+	const char * cstring(){
 		return elements;
 	}
 
@@ -121,7 +127,7 @@ public:
 	bool operator>=(Str const & s){
 		return strcmp(elements, s.elements) >= 0;	
 	}
-	char operator[](int i){
+	char & operator[](int i){
 		return elements[i];
 	}
 
@@ -154,7 +160,7 @@ private:
 };
 
 std::istream & operator>>(std::istream &is, Str &s){
-	is >> s.elements; //todo
+	is >> s.elements;
 	return is;
 }
 
@@ -197,15 +203,15 @@ bool TestStr::test_str_char_constructor(){
 	return true;
 }
 
-bool TestStr::test_str_to_string(){
+bool TestStr::test_str_cstring(){
 	char cstring[] = "Vive le pthon aussi !";
 	Str s(cstring);
-	if(strcmp(cstring, s.to_string()) != 0)
+	if(strcmp(cstring, s.cstring()) != 0)
 		return false;
 
 	char cstring_vide[] = "";
 	Str s_vide(cstring_vide);
-	if(strcmp(cstring_vide, s_vide.to_string()) != 0)
+	if(strcmp(cstring_vide, s_vide.cstring()) != 0)
 		return false;
 
 	return true;
@@ -259,9 +265,9 @@ bool TestStr::test_str_square_brakets(){
 			return false;
 	}
 	// todo
-	// s[0] = 'W';
-	// if(s[0] != 'W')
-	// 	return false;
+	s[0] = 'W';
+	if(s[0] != 'W')
+		return false;
 	return true;
 }
 
@@ -287,11 +293,16 @@ bool TestStr::test_str_streams(){
 	return true;
 }
 
+bool TestStr::test_str_constructor_substring(){
+	Str s("Coucou gercoutrude", "cou");
+	if(strcmp(s.cstring(), "Cou gertrude") != 0)
+		return false;
+	return true;
+}
 
 
-int main(int argc, char const *argv[])
-{
+
+int main(int argc, char const *argv[]) {
 	TestStr testStr;
-
 	return 0;
 }
