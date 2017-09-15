@@ -31,7 +31,7 @@ bool test_swap(){
 ***********************************************/
 
 template <typename T>
-T min(T a, T b){
+T min(T const & a, T const & b){
 	if(a<b)
 		return a;
 	return b;
@@ -83,13 +83,16 @@ protected:
 
 	void grow(){
 		total_size += SIZE;
-		elements = realloc(elements, total_size);
+		elements = (T*)realloc(elements, total_size);
 	}
 
 public:
-	Tableau():elements(malloc(0)), total_size(0), index(0) {}
+	Tableau():elements((T*)malloc(0)), total_size(0), index(0) {}
+	Tableau(Tableau<T, SIZE> const & t):elements((T*)malloc(t.total_size)), total_size(t.total_size), index(t.index) {
+		memcpy(elements, t.elements, index);
+	}
 	/* _size is the element number in the table */
-	Tableau(T tableau[], int _size):elements(malloc(0)), total_size(0), index(0) {
+	Tableau(const T tableau[], const int _size):elements(malloc(0)), total_size(0), index(0) {
 		for (int i = 0; i < _size; i){
 			push(tableau[i]);
 		}
@@ -99,7 +102,7 @@ public:
 	}
 
 	void push(T const & element){
-		if(index == size)
+		if(index == total_size)
 			grow();
 		elements[index++] = element;
 	}
@@ -108,14 +111,50 @@ public:
 		return index;
 	}
 
+	T & operator[](const int i){
+		return elements[i];
+	}
+
+	void operator=(const Tableau t){
+
+	}
+
 friend bool test_tableau();
 };
 
 bool test_tableau(){
-	Tableau<int, 10> tint();
+	// Tableau<int, 10> tint(); -> créé une fonction tint
+	Tableau<int, 10> tint;
 	if(tint.total_size != 0)
 		return false;
 	if(tint.index != 0)
+		return false;
+
+	tint.push(3);
+	if(tint.index != 1)
+		return false;
+	if(tint.elements[0] != 3)
+		return false;
+	if(tint.total_size != 10)
+		return false;
+
+	Tableau<int, 10> tint2(tint);
+	if(tint.index != 1)
+		return false;
+	if(tint.elements[0] != 3)
+		return false;
+	if(tint.total_size != 10)
+		return false;
+
+	if(tint[0] != 3)
+		return false;
+
+	Tableau<int, 10> tint3 = tint;
+	if(tint3.index != 1)
+		return false;
+	if(tint3.elements[0] != 3)
+		return false;
+	if(tint3.total_size != 10)
 		return false;
 
 	return true;
