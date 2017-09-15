@@ -37,10 +37,28 @@ std::ostream & operator << (std::ostream & os, const LaClasse & lc)
 	os << " in ostream << LaClasse "<< lc.l << std::endl;
 	return os;
 }
+
+class LaClasseSpecialisee{
+	// LaClasseSpecialisee()
+	// {std::cout << "spe default\n";}
+	// LaClasseSpecialisee(LaClasseSpecialisee const & lcs)
+	// {std::cout << "spe copie\n";}
+	// LaClasseSpecialisee(int i)
+	// {std::cout << "se int\n";}
+
+	LaClasseSpecialisee const & operator=(LaClasseSpecialisee const & c)
+	{std::cout << "spe =\n"; return *this;}
+
+
+}
+
 // Testez et analysez la séquence d’appels aux fonctions membres
 // de LaClasse dans le programme suivant :
 int main()
 {
+
+	LaClasseSpecialisee lcs;
+	return 0;
 	LaClasse c1; /* c1 est créé sur la pile, contructeur par défaut appellé */
 	std::cout << std::endl;
 
