@@ -87,12 +87,17 @@ protected:
 
 	void grow(){
 		total_size += SIZE;
-		elements = (T*)realloc(elements, total_size);
+		elements = (T*)realloc(elements, total_size*sizeof(T));
 	}
 
 public:
 	Tableau():elements((T*)malloc(0)), total_size(0), index(0) {}
-	Tableau(Tableau<T, SIZE> const & t):elements((T*)malloc(t.total_size)), total_size(t.total_size), index(t.index) {
+	Tableau(int nb):elements((T*)malloc(0)), total_size(0), index(0) {
+		for (int i = 0; i < nb; i++){
+			push(0);
+		}
+	}
+	Tableau(Tableau<T, SIZE> const & t):elements((T*)malloc(t.total_size*sizeof(T))), total_size(t.total_size), index(t.index) {
 		memcpy(elements, t.elements, index);
 	}
 	/* _size is the element number in the table */
@@ -125,14 +130,35 @@ public:
 		free(elements);
 		total_size = t.total_size;
 		index = t.index;
-		elements = (T*)malloc(t.total_size);
+		elements = (T*)malloc(t.total_size*sizeof(T));
 		for (int i = 0; i < t.index; i++){
 			elements[i] = t.elements[i];
 		}
 	}
 
+	T *begin(){
+		return elements;
+	}
+
+	T *end(){
+		return elements+index;
+	}
+
+
+
 friend bool test_tableau();
 };
+template<typename T, int SIZE>
+std::ostream& operator<<(std::ostream& os, const Tableau<T, SIZE> t)  
+{  
+    os << "[";
+    for (int i = 0; i < t.index; i++)
+    {
+    	os << t.elements[i] << " ";
+    }
+    os << "]";
+    return os;  
+}  
 
 bool test_tableau(){
 	// Tableau<int, 10> tint(); -> créé une fonction tint
@@ -191,7 +217,43 @@ bool test_tableau(){
 template<typename T, int SIZE>
 class TabIterator{
 
+protected:
+	T *t;
+
+public:
+	TabIterator(Tableau<T, SIZE> const * _t): t(_t) {}
+	TabIterator(T * _t): t(_t) {}
+
+	
+
+	TabIterator<T, SIZE> operator++(){
+		t++;
+		return *this;
+	}
+
+	T & operator*(){
+		return *t;
+	}
+
+	bool operator!=(TabIterator<T, SIZE> const & it){
+		return t != it.t;
+	}
 };
+
+bool test_iterateur(){
+	int tab[] = {1, 2, 3};
+	Tableau<int,6> A(tab, 3);
+	// std::cin >> A;
+	TabIterator<int,6> it=A.begin(); // Appel le constructeur !!!
+	TabIterator<int,6> ite=A.end();
+	int i=0;
+	for(;it!=ite;++it){
+		if(tab[i] != *it)
+			return false;
+		i++;
+	}
+	return true;
+}
 
 /***********************************************
 				main
@@ -202,5 +264,6 @@ int main(int argc, char const *argv[]){
 	std::cout << test_swap() << " : test_swap" << std::endl;
 	std::cout << test_min() << " : test_min" << std::endl;
 	std::cout << test_tableau() << " : test_tableau" << std::endl;
+	std::cout << test_iterateur() << " : test_iterateur" << std::endl;
 	return 0;
 }
