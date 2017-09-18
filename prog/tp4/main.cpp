@@ -122,7 +122,6 @@ public:
 	}
 
 	Tableau<T, SIZE> & operator=(const Tableau<T, SIZE> & t){
-		std::cout << "operator=" << std::endl;
 		free(elements);
 		total_size = t.total_size;
 		index = t.index;
@@ -165,7 +164,8 @@ bool test_tableau(){
 	if(tint[0] != 3)
 		return false;
 
-	Tableau<int, 10> tint3 = tint;
+	Tableau<int, 10> tint3 = tint; // !!! appel du constructeur par copie
+	tint3 = tint; //				  !!! appel de operator=
 	if(tint3.index != 1)
 		return false;
 	if(tint3.elements[0] != 3)
