@@ -12,7 +12,7 @@ import javafx.util.Duration;
  * Classe gerant un joueur
  *
  */
-abstract public class Player 
+abstract public class Player
 {
 	  double x;       // position horizontale du joueur
 	  final double y; 	  // position verticale du joueur
@@ -20,29 +20,27 @@ abstract public class Player
 	  double step;    // pas d'un joueur
 	  
 
-	String playerColor;
 	  
 	  // On une image globale du joueur 
 	  Image directionArrow;
 	  Sprite sprite;
 	  ImageView PlayerDirectionArrow;
+	  Team team;
 	  
-	  GraphicsContext graphicsContext;
 	  
 	  /**
 	   * Constructeur du Joueur
 	   * 
 	   * @param gc ContextGraphic dans lequel on va afficher le joueur
-	   * @param color couleur du joueur
+	   * @param team couleur du joueur
 	   * @param yInit position verticale
 	   */
-	  Player(GraphicsContext gc, String color, int xInit, int yInit, String side)
+	  Player(Team team, int xInit, int yInit, String side)
 	  {
+		this.team = team;
 		// Tous les joueurs commencent au centre du canvas, 
 	    x = xInit;               
 	    y = yInit;
-	    graphicsContext = gc;
-	    playerColor=color;
 	    
 	    angle = 0;
 
@@ -79,15 +77,9 @@ abstract public class Player
 	  /**
 	   *  Affichage du joueur
 	   */
-	  void display()
-	  {
-		  graphicsContext.save(); // saves the current state on stack, including the current transform
-	      rotate(graphicsContext, angle, x + directionArrow.getWidth() / 2, y + directionArrow.getHeight() / 2);
-		  graphicsContext.drawImage(directionArrow, x, y);
-		  graphicsContext.restore(); // back to original state (before rotation)
-	  }
 
-	  private void rotate(GraphicsContext gc, double angle, double px, double py) {
+
+	  void rotate(GraphicsContext gc, double angle, double px, double py) {
 		  Rotate r = new Rotate(angle, px, py);
 		  gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 	  }
@@ -96,10 +88,8 @@ abstract public class Player
 	   *  Deplacement du joueur vers la gauche, on cantonne le joueur sur le plateau de jeu
 	   */
 	 
-	  void moveLeft() 
-	  {	    
-	    if (x > 10 && x < 520) 
-	    {
+	  void moveLeft(){	    
+	    if (x > 10 && x < 520){
 			spriteAnimate();
 		    x -= step;
 	    }
