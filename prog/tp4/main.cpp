@@ -96,8 +96,8 @@ public:
 		memcpy(elements, t.elements, index);
 	}
 	/* _size is the element number in the table */
-	Tableau(const T tableau[], const int _size):elements(malloc(0)), total_size(0), index(0) {
-		for (int i = 0; i < _size; i){
+	Tableau(const T tableau[], const int _size):elements((T*)malloc(0)), total_size(0), index(0) {
+		for (int i = 0; i < _size; i++){
 			push(tableau[i]);
 		}
 	}
@@ -121,7 +121,8 @@ public:
 		return elements[i];
 	}
 
-	void operator=(const Tableau t){
+	Tableau<T, SIZE> & operator=(const Tableau<T, SIZE> & t){
+		std::cout << "operator=" << std::endl;
 		free(elements);
 		total_size = t.total_size;
 		index = t.index;
@@ -172,15 +173,31 @@ bool test_tableau(){
 	if(tint3.total_size != 10)
 		return false;
 
+	int tab[] = {1, 2, 3, 4};
+	Tableau<int, 10> tint4(tab, 4);
+	if(tint4.elements[0] != 1)
+		return false;
+	if(tint4.elements[1] != 2)
+		return false;
+	if(tint4.elements[2] != 3)
+		return false;
+	if(tint4.elements[3] != 4)
+		return false;
+	if(tint4.index != 4)
+		return false;
 	return true;
 }
+
+template<typename T, int SIZE>
+class TabIterator{
+
+};
 
 /***********************************************
 				main
 ***********************************************/
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const *argv[]){
 	std::cout << "Test order matters" << std::endl;
 	std::cout << test_swap() << " : test_swap" << std::endl;
 	std::cout << test_min() << " : test_min" << std::endl;
