@@ -9,7 +9,7 @@ int generator(){
 
 template<typename T>
 void ostream_iterator (std::ostream const & stream, T const & o){
-	o::iterator it = o.begin();
+	T::iterator it = o.begin();
 	while(it != o.end()){
 		stream << *it++ << " ";
 	}
@@ -22,7 +22,7 @@ int main(){
 
   	std::generate(d.begin(), d.end(), generator);
 
-  	ostream_iterator<std::deque<int>> oit(std::cout, d);
+  	ostream_iterator<std::deque<int>>(std::cout, d);
 
 
   	return 0;
