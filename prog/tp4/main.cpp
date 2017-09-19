@@ -144,6 +144,8 @@ public:
 		return elements+index;
 	}
 
+	void insert
+
 
 
 friend bool test_tableau();
