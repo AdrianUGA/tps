@@ -27,22 +27,20 @@ public class App extends Application
         stage.setTitle("BalleAuPrisonnier");
 
         Group root = new Group();
-        Scene scene = new Scene( root );
+        Scene scene = new Scene(root);
 
         // On cree le terrain de jeu et on l'ajoute a la racine de la scene
-        Field gameField = new Field(scene, 600, 600 );
-        root.getChildren().add( gameField );
-		root.getChildren().add(gameField.getJoueurs().get(0).sprite);
-		root.getChildren().add(gameField.getJoueurs().get(1).sprite);
+        Field gameField = new Field(scene, 600, 600);
+        root.getChildren().add(gameField);
+		root.getChildren().add(gameField.game.getJoueurs().get(0).sprite);
+		root.getChildren().add(gameField.game.getJoueurs().get(1).sprite);
 
         // On ajoute la scene a la fenetre et on affiche
-        stage.setScene( scene );
+        stage.setScene(scene);
         stage.show();
 	}
 	
-    public static void main(String[] args) 
-    {
-        //System.out.println( "Hello World!" );
+    public static void main(String[] args){
     	Application.launch(args);
     }
 }
