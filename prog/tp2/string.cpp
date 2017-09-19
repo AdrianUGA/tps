@@ -39,19 +39,21 @@ class Str{
 public:
 	/* new char[1] */
 	Str() : size(0), elements((char*) malloc(sizeof(char))){
-		/* Size without last 0. Index on the last 0. */
-		elements[0] = '\0';
+		init();
 	}
 
 	Str(const char* s) : size(0), elements((char*) malloc(sizeof(char))){
+		init();
 		append(s);
 	}
 
 	Str(const std::string s) : size(0), elements((char*) malloc(sizeof(char))){
+		init();
 		append(s);
 	}
 
 	Str(const char c) : size(0), elements((char*) malloc(sizeof(char))){
+		init();
 		char s[2];
 		s[0] = c;
 		s[1] = '\0';
@@ -59,6 +61,7 @@ public:
 	}
 
 	Str(const char *s, const char *substr_to_remove) : size(0), elements((char*) malloc(sizeof(char))){
+		init();
 		int substr_len = strlen(substr_to_remove);
 		int s_len = strlen(s);
 		for (int i = 0; i < s_len; i++){
@@ -93,11 +96,12 @@ public:
 		if(strcmp(s, "") == 0)
 			return;
 		grow(strlen(s));
-		for (int i=0; i < strlen(s); i++){
-			elements[size] = s[i];
-			size++;
-		}
-		elements[size] = '\0';
+		strcat(elements, s);
+		// for (int i=0; i < strlen(s); i++){
+		// 	elements[size] = s[i];
+		// 	size++;
+		// }
+		// elements[size] = '\0';
 	}
 
 	void append(const std::string s){
@@ -151,11 +155,15 @@ public:
 	friend std::istream & operator>>(std::istream &is, Str &s);
 	friend std::ostream & operator<<(std::ostream &os, Str &s);
 private:
-	void grow(int size){
-		elements = (char*) realloc(elements, size + size);
+	void init(){
+		elements[0] = '\0';
+	}
+	void grow(int n){
+		size += n;
+		elements = (char*) realloc(elements, size);
 	}
 
-	int size;
+	int size; /* Size without last 0. Index on the last 0. */
 	char *elements;
 };
 
