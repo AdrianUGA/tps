@@ -69,27 +69,52 @@ struct IndexOf<TypeList<Head, Tail>, S> {
 	static const int result = (temp==-1 ? -1 : temp+1);
 };
 
-/* Union of L1 and L2 */
-// template <typename L1, typename L2>
-// struct Union;
-// template <typename 
+/* Concatenation of L1 and L2 */
+template <typename L1, typename L2>
+struct Concatenation;
+template <typename Head, typename Tail, typename L2>
+struct Concatenation<TypeList<Head, Tail>, L2>{
+	typedef TypeList<Head, typename Concatenation<Tail, L2>::Result> Result;
+};
+template <typename L2>
+struct Concatenation<NullType, L2> {
+	typedef L2 Result;
+};
+template <typename L1>
+struct Concatenation<L1, NullType> {
+	typedef L1 Result;
+};
+
+/* Remove duplicates */
+// TODO
+// template <typename L>
+// struct Duplicates;
+// template <typename Head, typename Tail>
+// struct Duplicates<TypeList<Head, Tail>> {
+// 	typedef TypeList<Head, Duplicates<Tail>> Result;
+// };
 
 
 /*
 			Main
 */
+typedef TypeList<char, NullType> Lchar;
+typedef TypeList<int, NullType> Lint;
+typedef TypeList<int, TypeList<char, NullType>> Lint_char;
 
 int main() {
-	TypeAt<TypeList<int, TypeList<char, NullType>>, 0>::Result int_var = 65;
-	TypeAt<TypeList<int, TypeList<char, NullType>>, 1>::Result char_var = 65;
+
+	TypeAt<Lint_char, 0>::Result int_var = 65;
+	TypeAt<Lint_char, 1>::Result char_var = 65;
 	std::cout << int_var << " " << char_var << std::endl;
 
-	std::cout << IndexOf<TypeList<int, TypeList<char, NullType>>, char>::result
+	std::cout << IndexOf<Lint_char, char>::result
 			<< " "
-			<< IndexOf<TypeList<int, TypeList<char, NullType>>, int>::result
+			<< IndexOf<Lint_char, int>::result
 			<< " "
-			<< IndexOf<TypeList<int, TypeList<char, NullType>>, int*>::result
+			<< IndexOf<Lint_char, int*>::result
 			<< std::endl;
 
-
+	TypeAt<Concatenation<Lchar, Lint>::Result,0>::Result char_var2 = 65;
+	std::cout << char_var2 << std::endl;
 }
