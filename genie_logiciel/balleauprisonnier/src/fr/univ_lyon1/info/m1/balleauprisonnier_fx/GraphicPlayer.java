@@ -47,6 +47,7 @@ public class GraphicPlayer implements PlayerInterface {
 		// directionArrow = sprite.getClip().;
 		
 		this.display();
+		this.spriteAnimate();
 	}
 	
 	@Override
@@ -87,7 +88,6 @@ public class GraphicPlayer implements PlayerInterface {
 	public void move(Direction direction) {
 		this.player.move(direction);
 		this.spriteAnimate();
-		this.display();
 	}
 
 	@Override
@@ -114,6 +114,8 @@ public class GraphicPlayer implements PlayerInterface {
 	@Override
 	public void event(String key) {
 		this.player.event(key);
+		this.display();
+		this.spriteAnimate();
 	}
 
 	@Override
