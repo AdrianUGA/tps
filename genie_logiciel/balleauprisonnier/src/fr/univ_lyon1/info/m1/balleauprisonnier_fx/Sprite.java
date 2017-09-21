@@ -18,7 +18,7 @@ class Sprite extends ImageView {
     private Timeline timeline;
     public boolean isRunning;
 
-    public Sprite(Image animationImage, int numCells, int numRows, Duration frameTime, String side) {
+    public Sprite(Image animationImage, int numCells, int numRows, Duration frameTime, Side side) {
         this.numCells = numCells;
 
         double cellWidth  = 64;//animationImage.getWidth() / numCells; //64x64
@@ -28,7 +28,7 @@ class Sprite extends ImageView {
         numCellsWalk = 9;
 
         int lineNumber = 8;
-        if(side == "top"){
+        if(side == Side.TOP){
             lineNumber += 2;
         }
 

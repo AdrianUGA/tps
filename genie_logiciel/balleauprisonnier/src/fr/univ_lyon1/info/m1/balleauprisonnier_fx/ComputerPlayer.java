@@ -3,8 +3,8 @@ package fr.univ_lyon1.info.m1.balleauprisonnier_fx;
 
 public class ComputerPlayer extends Player {
 
-	ComputerPlayer(Team color, int xInit, int yInit, String side) {
-		super(color, xInit, yInit, side);
+	ComputerPlayer(Team color, Position position, Side side, double step) {
+		super(color, position, side, step);
 		this.play(); // TODO check if the constructor really is the best place for this
 	}
 
@@ -15,6 +15,6 @@ public class ComputerPlayer extends Player {
 
 	/* IA doesn't need this */
 	@Override
-	void event(String key) {}
+	public void event(String key) {}
 
 }

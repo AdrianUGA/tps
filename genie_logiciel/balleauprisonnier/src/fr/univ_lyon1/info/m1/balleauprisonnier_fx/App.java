@@ -1,6 +1,8 @@
 package fr.univ_lyon1.info.m1.balleauprisonnier_fx;
 
 
+import java.util.LinkedList;
+
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -23,17 +25,27 @@ public class App extends Application
 	@Override
 	public void start(Stage stage) throws Exception 
 	{
+
+        /* Game initialisation */
+        Position.maxX = 520;
+        
+		Game game = new Game(new LinkedList<PlayerInterface>(), 600, 600);
+
+
+		/* GUI initialisation */
+		
 		// Nom de la fenetre
         stage.setTitle("BalleAuPrisonnier");
 
         Group root = new Group();
         Scene scene = new Scene(root);
-
+        
         // On cree le terrain de jeu et on l'ajoute a la racine de la scene
-        Field gameField = new Field(scene, 600, 600);
+        Field gameField = new Field(scene, game);
         root.getChildren().add(gameField);
-		root.getChildren().add(gameField.game.getJoueurs().get(0).sprite);
-		root.getChildren().add(gameField.game.getJoueurs().get(1).sprite);
+        for(PlayerInterface p : gameField.game.getJoueurs()){
+        	root.getChildren().add(((GraphicPlayer)p).sprite);
+        }
 
         // On ajoute la scene a la fenetre et on affiche
         stage.setScene(scene);
