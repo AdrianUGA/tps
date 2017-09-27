@@ -15,6 +15,8 @@ abstract public class Player implements PlayerInterface {
 	Team team;
 	Side side;
 
+	boolean hasBall;
+
 	/**
 	 * Constructeur du Joueur
 	 * 
@@ -31,6 +33,7 @@ abstract public class Player implements PlayerInterface {
 		this.angle = DEFAULT_ANGLE;
 		this.step = step;
 		this.side = side;
+		this.hasBall = false;
 	}
 
 	
@@ -98,6 +101,10 @@ abstract public class Player implements PlayerInterface {
 	
 	public double getAngle() {
 		return this.angle;
+	}
+	
+	public void setHasBall(boolean b) {
+		this.hasBall = b;
 	}
 
 }

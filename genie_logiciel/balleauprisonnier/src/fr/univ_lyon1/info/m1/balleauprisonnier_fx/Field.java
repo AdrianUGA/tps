@@ -55,6 +55,7 @@ public class Field extends Canvas {
 		players.add(new GraphicPlayer(gc, new ComputerPlayer(Team.BLUE, new Position(game.getWidth() - game.getWidth() / 3, 20), Side.TOP, randomGenerator.nextFloat())));
 
 		this.game.setPlayers(players);
+		this.game.setBall(new GraphicBall());
 		
 		/* Keyboard Event Listener */
 		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -85,6 +86,8 @@ public class Field extends Canvas {
 				for (PlayerInterface player : game.getJoueurs()) {
 					((GraphicPlayer) player).display();
 				}
+				
+				game.playFrame();
 			}
 		}.start(); // On lance la boucle de rafraichissement
 	}

@@ -132,4 +132,9 @@ public class GraphicPlayer implements PlayerInterface {
 	public double getAngle() {
 		return this.player.getAngle();
 	}
+
+	@Override
+	public void setHasBall(boolean b) {
+		this.player.setHasBall(b);
+	}
 }

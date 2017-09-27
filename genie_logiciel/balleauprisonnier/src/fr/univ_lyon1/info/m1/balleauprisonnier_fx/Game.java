@@ -8,6 +8,7 @@ public class Game {
 	
 	final int width;
 	final int height;
+	BallInterface ball;
     
     public Game(List<PlayerInterface> players2, int width, int height) {
     	this.players = players2;
@@ -33,6 +34,34 @@ public class Game {
 
 	public int getHeight() {
 		return height;
+	}
+
+	public BallInterface getBall() {
+		return this.ball;
+	}
+	
+	public void setBall(BallInterface ball)  {
+		this.ball = ball;
+	}
+
+	public void playFrame() {
+		this.ball.move();
+		if(this.ball.isStopped()) {
+			if(this.ball.getPosition().getY() > this.width/2)
+				this.pickupBall(Side.BOTTOM);
+			else
+				this.pickupBall(Side.TOP);
+		}
+		
+	}
+
+	private void pickupBall(Side side) {
+		for(PlayerInterface player : this.players) {
+			if(player.getSide() == side) {
+				player.setHasBall(true);
+				break;
+			}
+		}
 	}
 	
 	

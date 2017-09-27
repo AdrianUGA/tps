@@ -32,4 +32,6 @@ public interface PlayerInterface {
 	
 	public double getAngle();
 
+	void setHasBall(boolean b);
+
 }
