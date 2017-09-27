@@ -15,29 +15,26 @@ public class HumanPlayer extends Player {
 	private Map<String, String> keys;
 
 	
-	HumanPlayer(Team team, int xInit, int yInit, String side, Map<String, String> keys) {
-		super(team, xInit, yInit, side);
+	HumanPlayer(Team team, Position position, Side side, double step, Map<String, String> keys) {
+		super(team, position, side, step);
 		this.keys = keys;
 	}
 	
-	HumanPlayer(Team team, int xInit, int yInit, String side, String[] keys){
-		super(team, xInit, yInit, side);
-		String[] actions = {HumanPlayer.TURN_LEFT, HumanPlayer.TURN_RIGHT, HumanPlayer.MOVE_LEFT, HumanPlayer.MOVE_RIGHT, HumanPlayer.SHOOT};
-		Iterator<String> i1 = Arrays.asList(actions).iterator();
-		Iterator<String> i2 = Arrays.asList(keys).iterator();
-		this.keys = new HashMap<String, String>();
-		while (i1.hasNext() && i2.hasNext()) this.keys.put(i1.next(), i2.next());
+	HumanPlayer(Team team, Position position, Side side, double step, String[] keys){
+		super(team, position, side, step);
+		this.setKeys(keys);
 	}
+
 
 
 	public void event(String key) {
 		if(this.keys.containsKey(key)) {
 			switch(this.keys.get(key)) {
 				case MOVE_RIGHT:
-					this.moveRight();
+					this.move(Direction.EAST);
 					break;
 				case MOVE_LEFT:
-					this.moveLeft();
+					this.move(Direction.WEST);
 					break;
 				case TURN_RIGHT:
 					this.turnRight();
@@ -57,8 +54,12 @@ public class HumanPlayer extends Player {
 	}
 
 
-	public void setKeys(Map<String, String> keys) {
-		this.keys = keys;
+	public void setKeys(String[] keys) {
+		String[] actions = {HumanPlayer.TURN_LEFT, HumanPlayer.TURN_RIGHT, HumanPlayer.MOVE_LEFT, HumanPlayer.MOVE_RIGHT, HumanPlayer.SHOOT};
+		Iterator<String> i1 = Arrays.asList(actions).iterator();
+		Iterator<String> i2 = Arrays.asList(keys).iterator();
+		this.keys = new HashMap<String, String>();
+		while (i1.hasNext() && i2.hasNext()) this.keys.put(i2.next(), i1.next());
 	}
 
 }
